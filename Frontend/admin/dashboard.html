@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Admin - Portofolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body>
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo"><i class="fas fa-layer-group"></i> Admin Panel</div>
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-tab="overview"><i class="fas fa-chart-pie"></i> Overview</button>
+        <button class="nav-item" data-tab="profil"><i class="fas fa-id-card"></i> Profil</button>
+        <button class="nav-item" data-tab="skills"><i class="fas fa-code"></i> Skills</button>
+        <button class="nav-item" data-tab="experience"><i class="fas fa-briefcase"></i> Pengalaman</button>
+        <button class="nav-item" data-tab="projects"><i class="fas fa-diagram-project"></i> Proyek</button>
+        <button class="nav-item" data-tab="kontak"><i class="fas fa-envelope"></i> Pesan <span id="unreadBadge" class="badge" style="display:none;"></span></button>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="../index.html" target="_blank"><i class="fas fa-eye"></i> Lihat Web</a>
+        <button id="logoutBtn"><i class="fas fa-right-from-bracket"></i> Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="content">
+      <header class="topbar">
+        <button id="mobileToggle" class="mobile-toggle"><i class="fas fa-bars"></i></button>
+        <h1 id="pageTitle">Overview</h1>
+        <div class="topbar-user"><i class="fas fa-user-circle"></i> <span id="adminName">Admin</span></div>
+      </header>
+
+      <div id="toast" class="toast"></div>
+
+      <!-- ===== TAB: OVERVIEW ===== -->
+      <section class="tab-panel active" id="tab-overview">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <i class="fas fa-code"></i>
+            <div><span id="statSkills">-</span><small>Skills</small></div>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-briefcase"></i>
+            <div><span id="statExperiences">-</span><small>Pengalaman</small></div>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-diagram-project"></i>
+            <div><span id="statProjects">-</span><small>Proyek</small></div>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-envelope"></i>
+            <div><span id="statUnread">-</span><small>Pesan Belum Dibaca</small></div>
+          </div>
+        </div>
+        <div class="panel-box">
+          <h3>Aktivitas Terbaru</h3>
+          <ul id="recentList" class="recent-list"><li class="empty">Memuat...</li></ul>
+        </div>
+      </section>
+
+      <!-- ===== TAB: PROFIL ===== -->
+      <section class="tab-panel" id="tab-profil">
+        <div class="panel-box">
+          <h3>Edit Profil</h3>
+          <form id="profilForm" class="form-grid">
+            <div class="form-photo">
+              <img id="profilPhotoPreview" src="" alt="Foto profil" style="display:none;" />
+              <div class="photo-placeholder" id="profilPhotoPlaceholder"><i class="fas fa-user"></i></div>
+              <input type="file" id="profilPhotoInput" accept="image/*" />
+              <small>Upload foto ke Cloudinary (opsional)</small>
+            </div>
+
+            <div class="form-field"><label>Nama Lengkap</label><input type="text" id="p_nama_lengkap" /></div>
+            <div class="form-field"><label>Nama Panggilan</label><input type="text" id="p_nama_panggilan" /></div>
+            <div class="form-field"><label>Tempat Lahir</label><input type="text" id="p_tempat_lahir" /></div>
+            <div class="form-field"><label>Tanggal Lahir</label><input type="date" id="p_tanggal_lahir" /></div>
+            <div class="form-field"><label>Email</label><input type="email" id="p_email" /></div>
+            <div class="form-field"><label>Telepon</label><input type="text" id="p_telepon" /></div>
+            <div class="form-field"><label>Universitas</label><input type="text" id="p_universitas" /></div>
+            <div class="form-field"><label>Fakultas</label><input type="text" id="p_fakultas" /></div>
+            <div class="form-field"><label>Program Studi</label><input type="text" id="p_prodi" /></div>
+            <div class="form-field"><label>Semester</label><input type="text" id="p_semester" /></div>
+            <div class="form-field form-field-full"><label>Alamat</label><textarea id="p_alamat"></textarea></div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-primary" id="profilSaveBtn">Simpan Profil</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- ===== TAB: SKILLS ===== -->
+      <section class="tab-panel" id="tab-skills">
+        <div class="panel-box">
+          <div class="panel-header">
+            <h3>Daftar Skills</h3>
+            <button class="btn-primary btn-sm" id="addSkillBtn"><i class="fas fa-plus"></i> Tambah Skill</button>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead><tr><th>Icon</th><th>Nama Skill</th><th>Icon Class</th><th></th></tr></thead>
+              <tbody id="skillsTableBody"><tr><td colspan="4" class="empty">Memuat...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== TAB: EXPERIENCE ===== -->
+      <section class="tab-panel" id="tab-experience">
+        <div class="panel-box">
+          <div class="panel-header">
+            <h3>Daftar Pengalaman</h3>
+            <button class="btn-primary btn-sm" id="addExpBtn"><i class="fas fa-plus"></i> Tambah Pengalaman</button>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead><tr><th>Posisi</th><th>Perusahaan</th><th>Durasi</th><th></th></tr></thead>
+              <tbody id="expTableBody"><tr><td colspan="4" class="empty">Memuat...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== TAB: PROJECTS ===== -->
+      <section class="tab-panel" id="tab-projects">
+        <div class="panel-box">
+          <div class="panel-header">
+            <h3>Daftar Proyek</h3>
+            <button class="btn-primary btn-sm" id="addProjectBtn"><i class="fas fa-plus"></i> Tambah Proyek</button>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead><tr><th>Gambar</th><th>Judul</th><th>Link</th><th></th></tr></thead>
+              <tbody id="projectsTableBody"><tr><td colspan="4" class="empty">Memuat...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== TAB: KONTAK ===== -->
+      <section class="tab-panel" id="tab-kontak">
+        <div class="panel-box">
+          <h3>Pesan Masuk</h3>
+          <div class="table-wrapper">
+            <table>
+              <thead><tr><th>Status</th><th>Nama</th><th>Email</th><th>Pesan</th><th>Waktu</th><th></th></tr></thead>
+              <tbody id="kontakTableBody"><tr><td colspan="6" class="empty">Memuat...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ===== MODAL (dipakai untuk form skill/experience/project) ===== -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modalTitle">Form</h3>
+        <button id="modalClose"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
